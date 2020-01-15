@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+.App {
+  width: 100%;
+  height: 100vh;
+  background: lightgray;
+}
+
+.header {
+  background: black;
+  text-align: center;
+  font-size: 15px;
+  color: greenyellow;
+  height: 10%;
+}
+
+.main {
+  width: 350px;
+  margin: auto;
+  background: lightgray;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.button {
+  width: 160px;
+  height: 150px;
+  background: black;
+  border-radius: 10px;
+  margin: 10px auto;
+  text-align: center;
+  color: greenyellow;
+  box-shadow: 0px 10px 0px 0px rgba(0,0,0,0.75);
+}
+
+.button h3 {
+  margin-top: 25%;
+}
+
+.button:active {
+  background: lightcyan;
+  box-shadow: none;
+  transform: translateY(5px);
+}
+
+.footer {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  bottom: 0px;
+  text-align: center;
+  margin: 0px;
+  color: white;
+  background: black;
+}

@@ -1,0 +1,9 @@
+{
+  "short_name": "Remote",
+  "name": "Home Controller Remote",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "blueviolet",
+  "background_color": "#ffffff"
+}

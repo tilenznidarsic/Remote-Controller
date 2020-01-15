@@ -1,0 +1,25 @@
+{
+    "buttons": [
+        {
+            "name": "Mute/Unmute",
+            "action": ["mute", "unmute"]
+        },
+        {
+            "name": "Set Volume",
+            "action": "set"
+        },
+        {
+            "name": "Plus Vol",
+            "action": "plus"
+        },
+        {
+            "name": "Minus Vol",
+            "action": "minus"
+        },
+        {
+            "name": "Lock",
+            "action": "lock",
+            "sudo": true
+        }
+    ]
+}
