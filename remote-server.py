@@ -1,4 +1,5 @@
 import os
+import sys
 import socketio
 import subprocess
 from aiohttp import web
@@ -8,7 +9,7 @@ os.chdir("SetVol")
 
 ################ Volume controls with setvol #############
 def set_volume(vol):
-    subprocess.call(["setvol", "{}".format(vol)])
+    subprocess.call(["setvol", "{}".format(vol), "beep"])
     print("Settig volume to {}".format(vol))
 
 def plus_volume(amount):
@@ -47,18 +48,18 @@ app = web.Application()
 sio.attach(app)
 
 @sio.event
+def connect(o, t):
+    print('connection established: ', o)
+
+@sio.event
+def disconnect(o):
+    print('disconnected from server: ', o)
+
+@sio.event
 def execute(sid, data):
-    if data == "plus":
-        plus_volume(5)
-        return "Plus"
-    elif data == "minus":
-        minus_volume(5)
-    elif  data == "mute":
-        mute_volume()
-    elif data == "unmute":
-        unmute_volume()
-    elif data == "lock":
-        lock_computer()
+    eval(data)
+    sys.stdout.flush()
+
 
 if __name__ == "__main__":
     web.run_app(app)

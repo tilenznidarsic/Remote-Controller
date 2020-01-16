@@ -2,24 +2,28 @@
     "buttons": [
         {
             "name": "Mute/Unmute",
-            "action": ["mute", "unmute"]
+            "action": ["mute_volume()", "unmute_volume()"],
+            "func": "this.handleMute"
         },
         {
             "name": "Set Volume",
-            "action": "set"
+            "action": "set_volume({})",
+            "func": "this.handleSetVolume"
         },
         {
             "name": "Plus Vol",
-            "action": "plus"
+            "action": "plus_volume({})",
+            "func": "this.handleVolume"
         },
         {
             "name": "Minus Vol",
-            "action": "minus"
+            "action": "minus_volume({})",
+            "func": "this.handleVolume"
         },
         {
             "name": "Lock",
-            "action": "lock",
-            "sudo": true
+            "action": "lock_computer()",
+            "func": "this.handleLock"
         }
     ]
 }

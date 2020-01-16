@@ -1,69 +1,102 @@
 import React, { Component } from 'react';
 import './App.css';
 import io from "socket.io-client"
+import Settings from "./components/Settings"
 
-const socket = io("http://192.168.1.109:8080")
+
+let socket = io(`http://${window.localStorage.getItem("addr")}`)
 
 export default class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-      bm: require("./button-map.json"),
-      amount: 5,
-      mute: false,
-      active: "Remote App",
-      volume: 50
+    constructor() {
+        super()
+        this.state = {
+            bm: require("./button-map.json"),
+            amount: 10,
+            mute: false,
+            settings: false,
+            volume: 50,
+            beep: "YES"
+        }
+    }
+
+  handleLock = item => {
+    if (window.prompt("Password: ") === "pass") {
+        socket.emit("execute", item.action)
     }
   }
 
-  handleClick = (action, sudo, item) => { 
-    const {mute, volume} = this.state
-    this.setState({active: item.name})
+  handleSetVolume = item => {
+      let level = window.prompt("Set to: ")
+      level != null && socket.emit("execute", item.action.replace("{}", level))
+      this.setState({volume: parseInt(level)})
+  }
 
-    if (sudo && window.prompt("Password: ") === "pass") {
-        socket.emit("execute", action)
-    }
+  handleVolume = item => {
+    const {amount} = this.state
+    socket.emit("execute", item.action.replace("{}", amount))
+    item.action === "plus_volume({})" ? 
+        this.setState((state) => {return {volume: state.volume += parseInt(amount)}}) 
+        :
+        this.setState((state) => {return {volume: state.volume -= parseInt(amount)}}) 
+  }
 
-    if (!sudo && typeof(action) === "string") {
-        socket.emit("execute", action)
-        action === "plus" ? this.setState({volume: volume + 5}) : this.setState({volume: volume - 5})
-    }
-    else if (typeof(action) === "object") {
-      if (mute) {
-        socket.emit("execute", action[1])
+  handleMute = item => {
+    const {mute} = this.state
+    if (mute) {
+        socket.emit("execute", item.action[1])
         this.setState({mute: false})
-      }
-      else {
-        socket.emit("execute", action[0])
+    }
+    else {
+        socket.emit("execute", item.action[0])
         this.setState({mute: true})
-      }
     }
   }
 
-  componentDidMount() {
-      //socket.emit("execute", {""})
+  setServer = () => {
+    if (!window.localStorage.getItem("addr")) {
+    window.localStorage.setItem("addr", window.prompt("Enter server IP and PORT: "))
+    window.location.reload()
+    }
   }
+
+    componentDidMount() {
+        this.setServer()
+        setTimeout(() => !socket.connected && window.alert("Disconected!"), 3000)
+    }
 
   render() {
+    const {settings, amount, beep, volume, mute} = this.state
+    let addr = window.localStorage.getItem("addr")
+
     return (
-      <div className="App">
-        <div className="header">
-            <h1>REMOTE</h1>
-            <span>{this.state.volume}</span>
+        <div className="App">
+            <div className="header" onClick={() => console.log(socket.connected)}>
+                <h1>REMOTE</h1>
+                <span>{!mute ? volume : "MUTE"}</span>
+            </div>
+            {settings === false ? 
+                <div className="main">
+                {this.state.bm["buttons"].map((item, index) => {
+                    return (
+                    <div className="button" key={index} onClick={() => eval(item.func)(item)} >
+                        <h3>{item.name}</h3>
+                    </div>
+                    )
+                })}
+                </div>
+                :
+                <Settings 
+                    amount={amount}
+                    beep={beep}
+                    setServer={this.setServer}
+                    setAmount={(a) => this.setState({amount: a})}
+                    setBeep={(b) => this.setState({beep: b})}
+                />
+            }
+            <div className="footer">
+                <button onClick={() => this.setState({settings: !settings})}>{settings ? "REMOTE" : "SETTINGS"}</button>
+            </div>
         </div>
-        <div className="main">
-          {this.state.bm["buttons"].map((item, index) => {
-            return (
-              <div className="button" key={index} onClick={() => this.handleClick(item.action, item.sudo, item)} >
-                <h3>{item.name}</h3>
-              </div>
-            )
-          })}
-        </div>
-        <div className="footer">
-            {this.state.active}
-        </div>
-      </div>
     )
   }
 }
