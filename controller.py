@@ -13,7 +13,8 @@ class ComputerController:
         self.should_beep = True
         self.pwd = pwd
         # set parameters
-        self.update()
+        if self.os == "win32":
+            self.update()
 
     def toJSON(self):
         obj = {
@@ -79,10 +80,3 @@ class ComputerController:
         elif split_string[-1] == "(Muted)":
             self.mute = True
             self.audio_level = int(split_string[-2]) 
-
-
-
-if __name__ == "__main__":
-    os.chdir("SetVol")
-    x = ComputerController("fff")
-    print(x.toJSON())
