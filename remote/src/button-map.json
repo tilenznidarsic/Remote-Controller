@@ -1,29 +1,50 @@
-{
-    "buttons": [
-        {
-            "name": "Mute/Unmute",
-            "action": ["mute_volume()", "unmute_volume()"],
-            "func": "this.handleMute"
-        },
-        {
-            "name": "Set Volume",
-            "action": "set_volume({})",
-            "func": "this.handleSetVolume"
-        },
-        {
-            "name": "Plus Vol",
-            "action": "plus_volume({})",
-            "func": "this.handleVolume"
-        },
-        {
-            "name": "Minus Vol",
-            "action": "minus_volume({})",
-            "func": "this.handleVolume"
-        },
-        {
-            "name": "Lock",
-            "action": "lock_computer()",
-            "func": "this.handleLock"
-        }
-    ]
-}
+[
+    {
+        "name": "Mute/Unmute",
+        "action": "toggle_mute()",
+        "permission": false,
+        "amount": false,
+        "bg": "",
+        "color": ""
+    },
+    {
+        "name": "Set Volume",
+        "action": "set_volume({})",
+        "permission": false,
+        "amount": true,
+        "bg": "",
+        "color": ""
+    },
+    {
+        "name": "Plus Vol",
+        "action": "volume(True)",
+        "permission": false,
+        "amount": false,
+        "bg": "#73ff83",
+        "color": "black"
+    },
+    {
+        "name": "Minus Vol",
+        "action": "volume(False)",
+        "permission": false,
+        "amount": false,
+        "bg": "#fc7d74",
+        "color": "black"
+    },
+    {
+        "name": "Lock",
+        "action": "lock_computer('**')",
+        "permission": true,
+        "amount": false,
+        "bg": "",
+        "color": ""
+    },
+    {
+        "name": "ShutDown",
+        "action": "shutdown('**')",
+        "permission": true,
+        "amount": false,
+        "bg": "",
+        "color": ""
+    }
+]

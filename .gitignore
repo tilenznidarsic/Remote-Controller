@@ -1,1 +1,4 @@
 remote/node_modules
+test.py
+node_modules
+__pycache__

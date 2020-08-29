@@ -1,46 +1,25 @@
-import os
-import sys
+import os, sys, time, json
 import socketio
 import subprocess
 from aiohttp import web
+from controller import ComputerController
 
+#################### setup #############################
+OS = sys.platform
 
-os.chdir("SetVol")
+if OS == "win32":
+    os.chdir("SetVol")
 
-################ Volume controls with setvol #############
-def set_volume(vol):
-    subprocess.call(["setvol", "{}".format(vol), "beep"])
-    print("Settig volume to {}".format(vol))
+# Default password
+password = "pass"
 
-def plus_volume(amount):
-    subprocess.call(["setvol", "+{}".format(amount), "beep"])
-    print("Setting volume +{}".format(amount))
+try:
+    password = sys.argv[1]
+    os.system("cls" if OS=="win32" else "clear")
+except:
+    print("Default password!")
 
-def minus_volume(amount):
-    subprocess.call(["setvol", "-{}".format(amount), "beep"])
-    print("Settig volume -{}".format(amount))
-
-def mute_volume():
-    subprocess.call(["setvol", "mute"])
-    print("Volume MUTE!")
-
-
-def unmute_volume():
-    subprocess.call(["setvol", "unmute"])
-    print("Volume UNMUTE!")
-
-
-
-###################### OS functions ######################
-def lock_computer():
-    os.system("rundll32.exe user32.dll LockWorkStation")
-
-
-def shutdown_computer(time):
-    os.system("shutdown -s -t {}".format(time))
-
-
-
+mypc = ComputerController(password)
 
 #################### server #############################
 sio = socketio.AsyncServer(cors_allowed_origins="*")
@@ -48,17 +27,42 @@ app = web.Application()
 sio.attach(app)
 
 @sio.event
-def connect(o, t):
-    print('connection established: ', o)
+def connect(sid, t):
+    #print('connection established: ', sid)
+    pass
 
 @sio.event
-def disconnect(o):
-    print('disconnected from server: ', o)
+def disconnect(sid):
+    #print('disconnected from server: ', sid)
+    pass
+
+@sio.event
+async def status(sid):
+    print(f"Status Request from {sid}")
+    await sio.emit("reply", room=sid, data=mypc.toJSON())
+
+@sio.event
+def sync(sid):
+    print(f"Sync request from: {sid}")
+    mypc.update()
+
+@sio.event
+def settings(sid, data):
+    parsed = json.loads(data)
+    
+    if parsed["amount"] == None:
+        mypc.should_beep = eval(parsed["beep"])
+    else:
+        mypc.vol_change_amount = int(parsed["amount"])
+        mypc.should_beep = eval(parsed["beep"])
 
 @sio.event
 def execute(sid, data):
-    eval(data)
+    # data executes ComputerController function
+    print("Execute: " + str(data))
+    eval("mypc." + str(data))
     sys.stdout.flush()
+
 
 
 if __name__ == "__main__":
