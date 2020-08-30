@@ -2,9 +2,7 @@ import sys, json, subprocess, os
 
 
 class ComputerController:
-    # class was designed to work with setVol
     def __init__(self, pwd):
-        # win32
         self.os = sys.platform
         self.audio_level = 0
         self.mute = False

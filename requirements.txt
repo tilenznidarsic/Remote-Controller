@@ -1,0 +1,11 @@
+aiohttp==3.6.2
+async-timeout==3.0.1
+attrs==20.1.0
+chardet==3.0.4
+idna==2.10
+multidict==4.7.6
+python-engineio==3.13.2
+python-socketio==4.6.0
+six==1.15.0
+typing-extensions==3.7.4.3
+yarl==1.5.1

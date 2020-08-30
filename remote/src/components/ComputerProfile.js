@@ -18,7 +18,7 @@ class ComputerProfile extends Component {
 
     componentDidMount() {
         var parsedProfile = JSON.parse(localStorage.getItem("connectedAddress")) || {}
-        if (parsedProfile.ip == this.props.profile.ip) {
+        if (parsedProfile.ip == this.props.profile.ip && parsedProfile.port == this.props.profile.port) {
             this.setState({ connected: true })
         }
     }

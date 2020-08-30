@@ -22,6 +22,7 @@
     height: 55%;
     display: flex;
     justify-content: center;
+    overflow-y: scroll;
 }
 
 .button-grid {

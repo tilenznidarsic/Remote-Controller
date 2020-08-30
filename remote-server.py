@@ -10,6 +10,8 @@ OS = sys.platform
 if OS == "win32":
     os.chdir("SetVol")
 
+DEBUG = True
+
 # Default password
 password = "pass"
 
@@ -25,16 +27,6 @@ mypc = ComputerController(password)
 sio = socketio.AsyncServer(cors_allowed_origins="*")
 app = web.Application()
 sio.attach(app)
-
-@sio.event
-def connect(sid, t):
-    #print('connection established: ', sid)
-    pass
-
-@sio.event
-def disconnect(sid):
-    #print('disconnected from server: ', sid)
-    pass
 
 @sio.event
 async def status(sid):
