@@ -58,7 +58,7 @@ then ->
 ```
 npm start
 ```
-7. visit *{server_ip}:8080* on your phone.
+7. visit *{server_ip}:3000* on your phone.
 8. Save app to Home.
 9. Click on "SERVERS" button and create new server profile
 10. Click on server profile and wait.
